@@ -9,8 +9,10 @@ def top_ten(subreddit):
     headers = {"User-Agent": "linux:alu-scripting:v1.0"}
     response = requests.get(url, headers=headers,
                             allow_redirects=False)
-    if response.status_code != 200:
+    if response.status_code in (301, 302, 404):
         print(None)
+        return
+    if response.status_code != 200:
         return
     posts = response.json().get("data", {}).get("children", [])
     for post in posts[:10]:
